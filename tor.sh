@@ -28,20 +28,20 @@ install_script() {
 
   MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
  
- cd  /usr/local/x-ui/ && wget https://raw.githubusercontent.com/meysamsh1092/tor/main/blocker.py| exit
- echo "file downloaded"
- chmod +x blocker.py
+  cd /usr/local/x-ui/ && wget https://raw.githubusercontent.com/meysamsh1092/tor/main/blocker.py | exit
+  echo "File downloaded"
+  chmod +x blocker.py
  
- mkdir -p /usr/local/x-ui
+  mkdir -p /usr/local/x-ui
 
-  echo "create file: $LOG_SCRIPT_PATH ..."
+  echo "Create file: $LOG_SCRIPT_PATH ..."
   cat <<EOT > $LOG_SCRIPT_PATH
 #!/bin/bash
 /usr/bin/tail -f /usr/local/x-ui/access.log >> /usr/local/x-ui/log.txt
 EOT
   chmod +x $LOG_SCRIPT_PATH
 
-  echo "create file: $TAIL_SERVICE_PATH ..."
+  echo "Create file: $TAIL_SERVICE_PATH ..."
   cat <<EOT > $TAIL_SERVICE_PATH
 [Unit]
 Description=Tail Access Log and Redirect to File
@@ -59,7 +59,7 @@ EOT
   systemctl enable tail-log.service
   systemctl start tail-log.service
 
-  echo "create file $ROTATE_SCRIPT_PATH ..."
+  echo "Create file $ROTATE_SCRIPT_PATH ..."
   cat <<EOT > $ROTATE_SCRIPT_PATH
 #!/bin/bash
 
@@ -98,7 +98,7 @@ fi
 EOT
   chmod +x $ROTATE_SCRIPT_PATH
 
-  echo "create file: $ROTATE_SERVICE_PATH ..."
+  echo "Create file: $ROTATE_SERVICE_PATH ..."
   cat <<EOT > $ROTATE_SERVICE_PATH
 [Unit]
 Description=Log Rotation Service
@@ -109,7 +109,7 @@ Type=oneshot
 WantedBy=multi-user.target
 EOT
 
-  echo "create file: $ROTATE_TIMER_PATH ..."
+  echo "Create file: $ROTATE_TIMER_PATH ..."
   cat <<EOT > $ROTATE_TIMER_PATH
 [Unit]
 Description=Timer for Log Rotation Service
@@ -132,9 +132,8 @@ EOT
   echo "Installation completed successfully."
 }
 
-
 change_file_size() {
-  echo "Please enter the new file size (in GB).:"
+  echo "Please enter the new file size (in GB):"
   read -r NEW_MAX_SIZE
 
   if [[ -z "$NEW_MAX_SIZE" ]]; then
@@ -160,13 +159,42 @@ search_logs() {
   grep "$SEARCH_TERM" $LOG_FILE
 }
 
+update_variables() {
+  PYTHON_FILE="/usr/local/x-ui/blocker.py"
+
+  if [ ! -f "$PYTHON_FILE" ]; then
+    echo "The file $PYTHON_FILE does not exist."
+    return
+  fi
+
+  echo "Enter new bot_token:"
+  read -r NEW_BOT_TOKEN
+  if [[ -z "$NEW_BOT_TOKEN" ]]; then
+    echo "No bot_token entered. Operation cancelled."
+    return
+  fi
+
+  echo "Enter new channel_id:"
+  read -r NEW_CHANNEL_ID
+  if [[ -z "$NEW_CHANNEL_ID" ]]; then
+    echo "No channel_id entered. Operation cancelled."
+    return
+  fi
+
+  sed -i "s/^\(bot_token\s*=\s*\).*/\1'$NEW_BOT_TOKEN'/" "$PYTHON_FILE"
+  sed -i "s/^\(channel_id\s*=\s*\).*/\1'$NEW_CHANNEL_ID'/" "$PYTHON_FILE"
+
+  echo "The variables have been updated in $PYTHON_FILE."
+}
+
 #Menu
 while true; do
   echo "Please choose:"
   echo "1) install"
   echo "2) resize"
   echo "3) search"
-  echo "4) exit"
+  echo "4) update bot_token and channel_id"
+  echo "5) exit"
   read -rp "Choice: " CHOICE
 
   case $CHOICE in
@@ -180,6 +208,9 @@ while true; do
     search_logs
     ;;
   4)
+    update_variables
+    ;;
+  5)
     echo "Exit"
     break
     ;;
