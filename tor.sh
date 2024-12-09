@@ -29,7 +29,7 @@ install_script() {
   MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
  
  cd  /usr/local/x-ui/| exit
- wget  https://github.com/Meysamsh1092/tor/blocker.py
+ wget https://raw.githubusercontent.com/meysamsh1092/tor/main/blocker.py
  echo "file downloaded"
  chmod +x blocker.py
  
