@@ -28,10 +28,6 @@ install_script() {
 
   MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
  
-  cd /usr/local/x-ui/ && wget https://raw.githubusercontent.com/meysamsh1092/tor/main/blocker.py | exit
-  echo "File downloaded"
-  chmod +x blocker.py
- 
   mkdir -p /usr/local/x-ui
 
   echo "Create file: $LOG_SCRIPT_PATH ..."
@@ -157,34 +153,6 @@ search_logs() {
 
   echo "Search results for: '$SEARCH_TERM':"
   grep "$SEARCH_TERM" $LOG_FILE
-}
-
-update_variables() {
-  PYTHON_FILE="/usr/local/x-ui/blocker.py"
-
-  if [ ! -f "$PYTHON_FILE" ]; then
-    echo "The file $PYTHON_FILE does not exist."
-    return
-  fi
-
-  echo "Enter new bot_token:"
-  read -r NEW_BOT_TOKEN
-  if [[ -z "$NEW_BOT_TOKEN" ]]; then
-    echo "No bot_token entered. Operation cancelled."
-    return
-  fi
-
-  echo "Enter new channel_id:"
-  read -r NEW_CHANNEL_ID
-  if [[ -z "$NEW_CHANNEL_ID" ]]; then
-    echo "No channel_id entered. Operation cancelled."
-    return
-  fi
-
-  sed -i "s/^\(bot_token\s*=\s*\).*/\1'$NEW_BOT_TOKEN'/" "$PYTHON_FILE"
-  sed -i "s/^\(channel_id\s*=\s*\).*/\1'$NEW_CHANNEL_ID'/" "$PYTHON_FILE"
-
-  echo "The variables have been updated in $PYTHON_FILE."
 }
 
 #Menu
