@@ -7,7 +7,7 @@ TAIL_SERVICE_PATH="/etc/systemd/system/tail-log.service"
 ROTATE_SERVICE_PATH="/etc/systemd/system/log-rotate.service"
 ROTATE_TIMER_PATH="/etc/systemd/system/log-rotate.timer"
 # پرسیدن حجم فایل لاگ از کاربر
-echo "لطفاً حجم فایل (بر حسب گیگابایت) برای چرخش لاگ وارد کنید (پیش‌فرض: 5):"
+echo "Please enter file size (in GB) for log rotation (default): 5"
 read -r INPUT_MAX_SIZE
 
 # تنظیم حجم پیش‌فرض به 5 در صورتی که کاربر چیزی وارد نکرده باشد
