@@ -11,7 +11,7 @@ ROTATE_TIMER_PATH="/etc/systemd/system/log-rotate.timer"
 mkdir -p /usr/local/x-ui
 
 # ۱. ایجاد فایل tail-log.sh
-echo "ایجاد فایل $LOG_SCRIPT_PATH ..."
+echo "create file: $LOG_SCRIPT_PATH ..."
 cat <<EOT > $LOG_SCRIPT_PATH
 #!/bin/bash
 /usr/bin/tail -f /usr/local/x-ui/access.log >> /usr/local/x-ui/log.txt
@@ -20,7 +20,7 @@ chmod +x $LOG_SCRIPT_PATH
 echo " $LOG_SCRIPT_PATH was created."
 
 # ۲. ایجاد سرویس tail-log.service
-echo "ایجاد فایل $TAIL_SERVICE_PATH ..."
+echo "create file: $TAIL_SERVICE_PATH ..."
 cat <<EOT > $TAIL_SERVICE_PATH
 [Unit]
 Description=Tail Access Log and Redirect to File
@@ -39,10 +39,10 @@ echo "فعال‌سازی سرویس tail-log.service ..."
 systemctl daemon-reload
 systemctl enable tail-log.service
 systemctl start tail-log.service
-echo "سرویس tail-log فعال شد."
+echo " tail-log was activated ."
 
 # ۴. ایجاد فایل rotate_logs.sh
-echo "ایجاد فایل $ROTATE_SCRIPT_PATH ..."
+echo "create file $ROTATE_SCRIPT_PATH ..."
 cat <<EOT > $ROTATE_SCRIPT_PATH
 #!/bin/bash
 
@@ -83,7 +83,7 @@ chmod +x $ROTATE_SCRIPT_PATH
 echo " $ROTATE_SCRIPT_PATH was created."
 
 # ۵. ایجاد سرویس log-rotate.service
-echo "ایجاد فایل $ROTATE_SERVICE_PATH ..."
+echo "create file: $ROTATE_SERVICE_PATH ..."
 cat <<EOT > $ROTATE_SERVICE_PATH
 [Unit]
 Description=Log Rotation Service
@@ -97,7 +97,7 @@ EOT
 echo " $ROTATE_SERVICE_PATH was created."
 
 # ۶. ایجاد تایمر log-rotate.timer
-echo "ایجاد فایل $ROTATE_TIMER_PATH ..."
+echo "create file: $ROTATE_TIMER_PATH ..."
 cat <<EOT > $ROTATE_TIMER_PATH
 [Unit]
 Description=Timer for Log Rotation Service
