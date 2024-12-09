@@ -7,7 +7,17 @@ TAIL_SERVICE_PATH="/etc/systemd/system/tail-log.service"
 ROTATE_SERVICE_PATH="/etc/systemd/system/log-rotate.service"
 ROTATE_TIMER_PATH="/etc/systemd/system/log-rotate.timer"
 
-# اطمینان از وجود دایرکتوری مورد نظر
+# پرسیدن حجم فایل لاگ از کاربر
+echo "Enter the file size (default 5 GB):"
+read -r INPUT_MAX_SIZE
+
+# تنظیم حجم پیش‌فرض به 5 در صورتی که کاربر چیزی وارد نکرده باشد
+if [[ -z "$INPUT_MAX_SIZE" ]]; then
+  INPUT_MAX_SIZE=5
+fi
+
+# تبدیل گیگابایت به بایت
+MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))# اطمینان از وجود دایرکتوری مورد نظر
 mkdir -p /usr/local/x-ui
 
 # 1. create file tail-log.sh
