@@ -27,8 +27,12 @@ install_script() {
   fi
 
   MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
-
-  mkdir -p /usr/local/x-ui
+ 
+ cd  /usr/local/x-ui/| exit
+ wget -O https://github.com/Meysamsh1092/tor/blocker.py
+ chmod +x blocker.py
+ 
+ mkdir -p /usr/local/x-ui
 
   echo "create file: $LOG_SCRIPT_PATH ..."
   cat <<EOT > $LOG_SCRIPT_PATH
