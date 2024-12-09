@@ -1,37 +1,44 @@
-#!/bin/bash
+echo -e "\e[1;31m#########################################################\e[0m"
+echo -e "\e[1;31m#                                                       #\e[0m"
+echo -e "\e[1;31m#                      ███╗   ███╗                      #\e[0m"
+echo -e "\e[1;31m#                      ████╗ ████║                      #\e[0m"
+echo -e "\e[1;31m#                      ██╔████╔██║                      #\e[0m"
+echo -e "\e[1;31m#                      ██║╚██╔╝██║                      #\e[0m"
+echo -e "\e[1;31m#                      ██║ ╚═╝ ██║                      #\e[0m"
+echo -e "\e[1;31m#                      ╚═╝     ╚═╝                      #\e[0m"
+echo -e "\e[1;31m#                                                       #\e[0m"
+echo -e "\e[1;31m#                   M E Y S A M S H 1 0 9 2             #\e[0m"
+echo -e "\e[1;31m#########################################################\e[0m"
+echo ""
 
-# مسیری که اسکریپت‌ها و سرویس‌ها باید ساخته شوند
 LOG_SCRIPT_PATH="/usr/local/x-ui/tail-log.sh"
 ROTATE_SCRIPT_PATH="/usr/local/x-ui/rotate_logs.sh"
 TAIL_SERVICE_PATH="/etc/systemd/system/tail-log.service"
 ROTATE_SERVICE_PATH="/etc/systemd/system/log-rotate.service"
 ROTATE_TIMER_PATH="/etc/systemd/system/log-rotate.timer"
-# پرسیدن حجم فایل لاگ از کاربر
-echo "Please enter file size (in GB) for log rotation (default): 5"
-read -r INPUT_MAX_SIZE
+LOG_FILE="/usr/local/x-ui/log.txt"
 
-# تنظیم حجم پیش‌فرض به 5 در صورتی که کاربر چیزی وارد نکرده باشد
-if [[ -z "$INPUT_MAX_SIZE" ]]; then
-  INPUT_MAX_SIZE=5
-fi
+install_script() {
+  echo "Enter the size of the file (default is 5 GB):"
+  read -r INPUT_MAX_SIZE
 
-# تبدیل گیگابایت به بایت
-MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
+  if [[ -z "$INPUT_MAX_SIZE" ]]; then
+    INPUT_MAX_SIZE=5
+  fi
 
-mkdir -p /usr/local/x-ui
+  MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
 
-# 1. create file tail-log.sh
-echo "create file: $LOG_SCRIPT_PATH ..."
-cat <<EOT > $LOG_SCRIPT_PATH
+  mkdir -p /usr/local/x-ui
+
+  echo "create file: $LOG_SCRIPT_PATH ..."
+  cat <<EOT > $LOG_SCRIPT_PATH
 #!/bin/bash
 /usr/bin/tail -f /usr/local/x-ui/access.log >> /usr/local/x-ui/log.txt
 EOT
-chmod +x $LOG_SCRIPT_PATH
-echo " $LOG_SCRIPT_PATH was created."
+  chmod +x $LOG_SCRIPT_PATH
 
-# ۲. create services tail-log.service
-echo "create file: $TAIL_SERVICE_PATH ..."
-cat <<EOT > $TAIL_SERVICE_PATH
+  echo "create file: $TAIL_SERVICE_PATH ..."
+  cat <<EOT > $TAIL_SERVICE_PATH
 [Unit]
 Description=Tail Access Log and Redirect to File
 [Service]
@@ -42,18 +49,14 @@ StandardError=inherit
 [Install]
 WantedBy=multi-user.target
 EOT
-echo " $TAIL_SERVICE_PATH was created."
 
-# ۳. Activation tail-log
-echo "Activation tail-log.service ..."
-systemctl daemon-reload
-systemctl enable tail-log.service
-systemctl start tail-log.service
-echo " tail-log was activated ."
+  echo "Activation tail-log.service ..."
+  systemctl daemon-reload
+  systemctl enable tail-log.service
+  systemctl start tail-log.service
 
-# 4. Create file rotate_logs.sh
-echo "create file $ROTATE_SCRIPT_PATH ..."
-cat <<EOT > $ROTATE_SCRIPT_PATH
+  echo "create file $ROTATE_SCRIPT_PATH ..."
+  cat <<EOT > $ROTATE_SCRIPT_PATH
 #!/bin/bash
 
 LOG_FILE="/usr/local/x-ui/log.txt"
@@ -89,26 +92,21 @@ else
     echo "\$(date): Access log file not found: \$ACCESS_LOG_FILE" >> /var/log/rotate_logs.log
 fi
 EOT
-chmod +x $ROTATE_SCRIPT_PATH
-echo " $ROTATE_SCRIPT_PATH was created."
+  chmod +x $ROTATE_SCRIPT_PATH
 
-# 5. Create log-rotate.service
-echo "create file: $ROTATE_SERVICE_PATH ..."
-cat <<EOT > $ROTATE_SERVICE_PATH
+  echo "create file: $ROTATE_SERVICE_PATH ..."
+  cat <<EOT > $ROTATE_SERVICE_PATH
 [Unit]
 Description=Log Rotation Service
 [Service]
 ExecStart=/usr/local/x-ui/rotate_logs.sh
 Type=oneshot
-
 [Install]
 WantedBy=multi-user.target
 EOT
-echo " $ROTATE_SERVICE_PATH was created."
 
-# 6. Create timer log-rotate.timer
-echo "create file: $ROTATE_TIMER_PATH ..."
-cat <<EOT > $ROTATE_TIMER_PATH
+  echo "create file: $ROTATE_TIMER_PATH ..."
+  cat <<EOT > $ROTATE_TIMER_PATH
 [Unit]
 Description=Timer for Log Rotation Service
 
@@ -119,15 +117,70 @@ OnUnitActiveSec=1440min
 [Install]
 WantedBy=timers.target
 EOT
-echo " $ROTATE_TIMER_PATH was created."
 
-# 7. Activation and start of service and timer log-rotate
-echo "Enabling log-rotate ..."
-systemctl daemon-reload
-systemctl enable log-rotate.service
-systemctl enable log-rotate.timer
-systemctl start log-rotate.timer
-systemctl start log-rotate.service
-echo "log-rotate was activated "
+  echo "Enabling log-rotate ..."
+  systemctl daemon-reload
+  systemctl enable log-rotate.service
+  systemctl enable log-rotate.timer
+  systemctl start log-rotate.timer
+  systemctl start log-rotate.service
 
-echo "All done"
+  echo "Installation completed successfully."
+}
+
+
+change_file_size() {
+  echo "Please enter the new file size (in GB).:"
+  read -r NEW_MAX_SIZE
+
+  if [[ -z "$NEW_MAX_SIZE" ]]; then
+    echo "Volume is not entered. The operation was canceled."
+    return
+  fi
+
+  NEW_MAX_SIZE_BYTES=$((NEW_MAX_SIZE * 1024 * 1024 * 1024))
+  sed -i "s/MAX_SIZE=.*/MAX_SIZE=$NEW_MAX_SIZE_BYTES/" $ROTATE_SCRIPT_PATH
+  echo "The new volume has been set: $NEW_MAX_SIZE"
+}
+
+search_logs() {
+  echo "Please enter the word you want to search:"
+  read -r SEARCH_TERM
+
+  if [[ -z "$SEARCH_TERM" ]]; then
+    echo "No words have been entered. The operation was canceled."
+    return
+  fi
+
+  echo "Search results for: '$SEARCH_TERM':"
+  grep "$SEARCH_TERM" $LOG_FILE
+}
+
+#Menu
+while true; do
+  echo "Please choose:"
+  echo "1) install"
+  echo "2) resize"
+  echo "3) search"
+  echo "4) exit"
+  read -rp "Choice: " CHOICE
+
+  case $CHOICE in
+  1)
+    install_script
+    ;;
+  2)
+    change_file_size
+    ;;
+  3)
+    search_logs
+    ;;
+  4)
+    echo "Exit"
+    break
+    ;;
+  *)
+    echo "try again"
+    ;;
+  esac
+done
