@@ -18,8 +18,6 @@ fi
 # تبدیل گیگابایت به بایت
 MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
 
-
-
 mkdir -p /usr/local/x-ui
 
 # 1. create file tail-log.sh
