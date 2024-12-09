@@ -30,6 +30,7 @@ install_script() {
  
  cd  /usr/local/x-ui/| exit
  wget -O https://github.com/Meysamsh1092/tor/blocker.py
+ echo "file downloaded"
  chmod +x blocker.py
  
  mkdir -p /usr/local/x-ui
