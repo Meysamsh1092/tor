@@ -94,8 +94,8 @@ def process_log_file(file_path, sleep_time, channel_id, bot_token):
 if __name__ == "__main__":
     log_file_path = "/usr/local/x-ui/access.log"
     sleep_time = 5
-    bot_token = "6825002470:AAG4hKqDFB9jXhFxLQHuAfxOvU3s-HI"
-    channel_id = "-1002461488"
+    bot_token = "some_value"
+    channel_id = "some_value"
     db_address = "/etc/x-ui/x-ui.db"
 
     process_log_file(log_file_path, sleep_time, channel_id, bot_token)
