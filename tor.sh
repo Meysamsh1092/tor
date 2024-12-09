@@ -60,7 +60,7 @@ LOG_FILE="/usr/local/x-ui/log.txt"
 BACKUP_FILE="/usr/local/x-ui/log_backup.txt"
 ACCESS_LOG_FILE="/usr/local/x-ui/access.log"
 
-MAX_SIZE=\$((5 * 1024 * 1024 * 1024))
+MAX_SIZE=$MAX_SIZE
 
 if [ -f "\$LOG_FILE" ]; then
     FILE_SIZE=\$(stat -c%s "\$LOG_FILE")
