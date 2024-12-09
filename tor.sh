@@ -49,20 +49,7 @@ LOG_FILE="/usr/local/x-ui/log.txt"
 BACKUP_FILE="/usr/local/x-ui/log_backup.txt"
 ACCESS_LOG_FILE="/usr/local/x-ui/access.log"
 
-# پرسیدن حجم فایل لاگ از کاربر
-echo "Enter the file size (default 5 GB):"
-read -r INPUT_MAX_SIZE
-
-# تنظیم حجم پیش‌فرض به 5 در صورتی که کاربر چیزی وارد نکرده باشد
-if [[ -z "$INPUT_MAX_SIZE" ]]; then
-  INPUT_MAX_SIZE=5
-fi
-
-# تبدیل گیگابایت به بایت
-MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))# اطمینان از وجود دایرکتوری مورد نظر
-
-
-MAX_SIZE=$INPUT_MAX_SIZE
+MAX_SIZE=\$((5 * 1024 * 1024 * 1024))
 
 if [ -f "\$LOG_FILE" ]; then
     FILE_SIZE=\$(stat -c%s "\$LOG_FILE")
