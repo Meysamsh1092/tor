@@ -17,7 +17,7 @@ cat <<EOT > $LOG_SCRIPT_PATH
 /usr/bin/tail -f /usr/local/x-ui/access.log >> /usr/local/x-ui/log.txt
 EOT
 chmod +x $LOG_SCRIPT_PATH
-echo "فایل $LOG_SCRIPT_PATH ایجاد شد."
+echo " $LOG_SCRIPT_PATH was created."
 
 # ۲. ایجاد سرویس tail-log.service
 echo "ایجاد فایل $TAIL_SERVICE_PATH ..."
@@ -32,7 +32,7 @@ StandardError=inherit
 [Install]
 WantedBy=multi-user.target
 EOT
-echo "فایل $TAIL_SERVICE_PATH ایجاد شد."
+echo " $TAIL_SERVICE_PATH was created."
 
 # ۳. فعال‌سازی و شروع سرویس tail-log
 echo "فعال‌سازی سرویس tail-log.service ..."
@@ -80,7 +80,7 @@ else
 fi
 EOT
 chmod +x $ROTATE_SCRIPT_PATH
-echo "فایل $ROTATE_SCRIPT_PATH ایجاد شد."
+echo " $ROTATE_SCRIPT_PATH was created."
 
 # ۵. ایجاد سرویس log-rotate.service
 echo "ایجاد فایل $ROTATE_SERVICE_PATH ..."
@@ -94,7 +94,7 @@ Type=oneshot
 [Install]
 WantedBy=multi-user.target
 EOT
-echo "فایل $ROTATE_SERVICE_PATH ایجاد شد."
+echo " $ROTATE_SERVICE_PATH was created."
 
 # ۶. ایجاد تایمر log-rotate.timer
 echo "ایجاد فایل $ROTATE_TIMER_PATH ..."
@@ -109,15 +109,15 @@ OnUnitActiveSec=1440min
 [Install]
 WantedBy=timers.target
 EOT
-echo "فایل $ROTATE_TIMER_PATH ایجاد شد."
+echo " $ROTATE_TIMER_PATH was created."
 
 # ۷. فعال‌سازی و شروع سرویس و تایمر log-rotate
-echo "فعال‌سازی سرویس و تایمر log-rotate ..."
+echo "Enabling log-rotate ..."
 systemctl daemon-reload
 systemctl enable log-rotate.service
 systemctl enable log-rotate.timer
 systemctl start log-rotate.timer
 systemctl start log-rotate.service
-echo "سرویس و تایمر log-rotate فعال شد."
+echo "log-rotate was activated "
 
-echo "تمام مراحل با موفقیت انجام شد!"
+echo "All done"
