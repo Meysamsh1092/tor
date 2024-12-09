@@ -6,6 +6,19 @@ ROTATE_SCRIPT_PATH="/usr/local/x-ui/rotate_logs.sh"
 TAIL_SERVICE_PATH="/etc/systemd/system/tail-log.service"
 ROTATE_SERVICE_PATH="/etc/systemd/system/log-rotate.service"
 ROTATE_TIMER_PATH="/etc/systemd/system/log-rotate.timer"
+# پرسیدن حجم فایل لاگ از کاربر
+echo "لطفاً حجم فایل (بر حسب گیگابایت) برای چرخش لاگ وارد کنید (پیش‌فرض: 5):"
+read -r INPUT_MAX_SIZE
+
+# تنظیم حجم پیش‌فرض به 5 در صورتی که کاربر چیزی وارد نکرده باشد
+if [[ -z "$INPUT_MAX_SIZE" ]]; then
+  INPUT_MAX_SIZE=5
+fi
+
+# تبدیل گیگابایت به بایت
+MAX_SIZE=$((INPUT_MAX_SIZE * 1024 * 1024 * 1024))
+
+
 
 mkdir -p /usr/local/x-ui
 
@@ -49,7 +62,7 @@ LOG_FILE="/usr/local/x-ui/log.txt"
 BACKUP_FILE="/usr/local/x-ui/log_backup.txt"
 ACCESS_LOG_FILE="/usr/local/x-ui/access.log"
 
-MAX_SIZE=\$((5 * 1024 * 1024 * 1024))
+MAX_SIZE=$MAX_SIZE
 
 if [ -f "\$LOG_FILE" ]; then
     FILE_SIZE=\$(stat -c%s "\$LOG_FILE")
