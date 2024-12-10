@@ -7,9 +7,7 @@ import os
 
 def get_machine_ip():
     try:
-        # Connect to a public server to determine the IP
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            # Use Google's public DNS server IP and a random port
             s.connect(("8.8.8.8", 80))
             ip_address = s.getsockname()[0]
         return ip_address
@@ -19,16 +17,13 @@ def get_machine_ip():
 def get_hostname_and_ip():
     hostname = socket.gethostname()    
     try:
-        # Connect to a public server to determine the IP
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            # Use Google's public DNS server IP and a random port
             s.connect(("8.8.8.8", 80))
             ip_address = s.getsockname()[0]
         return hostname, ip_address
     except socket.error as e:
         print(f"Error: {e}")
         return "err", "err"
-    
 
 def detect_torrent_email(line):
     pattern = r"\[.*?BLOCK-TORRENT.*?\].*?email:\s(\S+)"
@@ -37,12 +32,10 @@ def detect_torrent_email(line):
         return match.group(1)
     return None
 
-
 def disable_user(email):
     conn = sqlite3.connect(db_address)
     c = conn.cursor()
 
-    # Check if the enable field is already 0
     c.execute(f"SELECT enable FROM client_traffics WHERE email=?", (email,))
     result = c.fetchone()
 
@@ -50,7 +43,6 @@ def disable_user(email):
         print("User is already disabled. No action needed.")
         rres = False
     else:
-        # Update the enable field to 0
         c.execute(f"UPDATE client_traffics SET enable=0 WHERE email=?", (email,))
         conn.commit()
         print("User disabled. Restarting x-ui service.")
@@ -59,7 +51,6 @@ def disable_user(email):
 
     conn.close()
     return rres
-
 
 def send_to_telegram(bot_token, channel_id, message):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
@@ -71,14 +62,15 @@ def send_to_telegram(bot_token, channel_id, message):
             f"Failed to send message: {message}. Status code: {response.status_code}, Response: {response.text}"
         )
 
-
 def process_log_file(file_path, sleep_time, channel_id, bot_token):
-    while True:
-        with open(file_path, "r+") as log_file:
-            lines = log_file.readlines()
-            log_file.seek(0)
-            log_file.truncate()
+    last_position = 0  # ذخیره مکان آخرین خط پردازش‌شده
 
+    while True:
+        with open(file_path, "r") as log_file:
+            log_file.seek(last_position)  # ادامه پردازش از مکان قبلی
+            lines = log_file.readlines()
+            last_position = log_file.tell()  # ذخیره مکان جدید
+            
             for line in lines:
                 email = detect_torrent_email(line)
                 if email:
@@ -90,13 +82,11 @@ def process_log_file(file_path, sleep_time, channel_id, bot_token):
 
         time.sleep(sleep_time)
 
-
 if __name__ == "__main__":
     log_file_path = "/usr/local/x-ui/access.log"
     sleep_time = 5
-    bot_token = "some_value"
-    channel_id = "some_value"
+    bot_token = "6825002470:AAG4hKezFCqDFB9jXhFxLQHuAfxOvU3s-HI"
+    channel_id = "-1002414661488"
     db_address = "/etc/x-ui/x-ui.db"
 
     process_log_file(log_file_path, sleep_time, channel_id, bot_token)
-
