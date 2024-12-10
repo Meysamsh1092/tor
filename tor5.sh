@@ -36,7 +36,13 @@ install_script() {
   apt update
   apt install -y python3-pip python3-sqlite3 pipx
   pipx install sqlite3
-  apt install pip -y && apt install screen -y && apt install python3-pip && pip3 install python-telegram-bot && pip3 install --force-reinstall -v "python-telegram-bot==13.5" && pip install telegram-send
+  apt install pip -y 
+  apt install screen -y 
+  apt install python3-pip 
+  pip3 install python-telegram-bot 
+  pip3 install --force-reinstall -v "python-telegram-bot==13.5" 
+  pip install telegram-send
+  
 echo "Downloading and setting up blocker.py..."
   mkdir -p /usr/local/x-ui
   cd /usr/local/x-ui || exit
