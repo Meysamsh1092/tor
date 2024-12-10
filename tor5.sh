@@ -261,10 +261,12 @@ delete_script() {
 }
 restart_service() {
 systemctl restart torrentblocker.service
-systemctl restop log-rotate.service
-systemctl restop tail-log.service
-systemctl restop log-rotate.service
-echo "All services are restarted..." 
+systemctl restart log-rotate.service
+systemctl restart tail-log.service
+systemctl restart log-rotate.service
+echo "All services are restarted"
+  echo -e "\nPress Enter to return to the menu."
+  read -r
 }
 
 # منو
