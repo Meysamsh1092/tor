@@ -283,3 +283,11 @@ while true; do
     delete_script
     ;;
   6)
+    echo "Exit"
+    break
+    ;;
+  *)
+    echo "Invalid choice. Please try again."
+    ;;
+  esac
+done
