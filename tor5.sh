@@ -34,8 +34,10 @@ install_script() {
 
   echo "Installing required packages..."
   apt update
-  apt install -y python3-pip python3-sqlite3 pipx
+  apt install python3-requests
+  apt install pipx
   pipx install sqlite3
+  apt install python3-sqlite3 
   apt install pip -y 
   apt install screen -y 
   apt install python3-pip 
