@@ -166,7 +166,9 @@ EOT
   systemctl start torrentblocker.service
 
   echo "Installation completed successfully."
-}
+    echo -e "\nPress Enter to return to the menu."
+  read -r
+  }
 
 change_file_size() {
   echo "Please enter the new file size (in GB):"
@@ -223,7 +225,9 @@ update_variables() {
   sed -i 's/^\s*channel_id\s*=\s*".*"/    channel_id = "'"$NEW_CHANNEL_ID"'"/' "$PYTHON_FILE"
 
   echo "The variables have been updated in $PYTHON_FILE."
-}
+    echo -e "\nPress Enter to return to the menu."
+  read -r
+  }
 
 delete_script() {
   echo "Are you sure you want to delete all services and the following files? (yes/no)"
@@ -243,11 +247,6 @@ delete_script() {
   systemctl stop log-rotate.service
   systemctl disable log-rotate.service
   rm -f /etc/systemd/system/log-rotate.service  
-  
-  echo "Stopping and disabling tail-log.service..."
-  systemctl stop tail-log.service
-  systemctl disable tail-log.service
-  rm -f $TAIL_SERVICE_PATH
 
   echo "Removing log-rotate.timer and service..."
   systemctl stop log-rotate.service
@@ -266,6 +265,8 @@ delete_script() {
   systemctl daemon-reload
 
   echo "All specified files and services have been successfully deleted."
+  echo -e "\nPress Enter to return to the menu."
+  read -r
 }
 restart_service() {
 systemctl restart torrentblocker.service
