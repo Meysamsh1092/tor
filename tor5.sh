@@ -7,7 +7,7 @@ ROTATE_SERVICE_PATH="/etc/systemd/system/log-rotate.service"
 ROTATE_TIMER_PATH="/etc/systemd/system/log-rotate.timer"
 LOG_FILE="/usr/local/x-ui/log.txt"
 
-# لوگو
+# logo
 show_logo() {
   echo -e "\e[1;31m#########################################################\e[0m"
   echo -e "\e[1;31m#                                                       #\e[0m"
@@ -231,6 +231,11 @@ delete_script() {
   systemctl disable torrentblocker.service
   rm -f /etc/systemd/system/torrentblocker.service
 
+  echo "Stopping and disabling log-rotate.service..."
+  systemctl stop log-rotate.service
+  systemctl disable log-rotate.service
+  rm -f /etc/systemd/system/log-rotate.service  
+  
   echo "Stopping and disabling tail-log.service..."
   systemctl stop tail-log.service
   systemctl disable tail-log.service
