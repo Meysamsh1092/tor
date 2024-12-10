@@ -259,6 +259,12 @@ delete_script() {
 
   echo "All specified files and services have been successfully deleted."
 }
+restart_service() {
+systemctl restart torrentblocker.service
+systemctl restop log-rotate.service
+systemctl restop tail-log.service
+systemctl restop log-rotate.service
+}
 
 # منو
 while true; do
@@ -266,11 +272,12 @@ while true; do
   show_logo
   echo "Please choose:"
   echo "1) Install"
-  echo "2) Resize"
+  echo "2) Resize File"
   echo "3) Search Logs"
   echo "4) Update bot_token and channel_id"
   echo "5) Delete Services and Files"
-  echo "6) Exit"
+  echo "6) Restart service"
+  echo "7) Exit"
   read -rp "Choice: " CHOICE
 
   case $CHOICE in
@@ -290,6 +297,9 @@ while true; do
     delete_script
     ;;
   6)
+    restart_service
+    ;;
+  7)
     echo "Exit"
     break
     ;;
