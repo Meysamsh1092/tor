@@ -182,6 +182,8 @@ change_file_size() {
   NEW_MAX_SIZE_BYTES=$((NEW_MAX_SIZE * 1024 * 1024 * 1024))
   sed -i "s/MAX_SIZE=.*/MAX_SIZE=$NEW_MAX_SIZE_BYTES/" $ROTATE_SCRIPT_PATH
   echo "The new volume has been set: $NEW_MAX_SIZE GB"
+   echo -e "\nPress Enter to return to the menu."
+  read -r
 }
 
 search_logs() {
@@ -263,7 +265,7 @@ delete_script() {
 
   echo "Reloading systemd daemon..."
   systemctl daemon-reload
-
+  
   echo "All specified files and services have been successfully deleted."
   echo -e "\nPress Enter to return to the menu."
   read -r
