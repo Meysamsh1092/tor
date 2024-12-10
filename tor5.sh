@@ -264,6 +264,7 @@ systemctl restart torrentblocker.service
 systemctl restop log-rotate.service
 systemctl restop tail-log.service
 systemctl restop log-rotate.service
+echo "All services are restarted..." 
 }
 
 # منو
