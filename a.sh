@@ -42,9 +42,6 @@ install_script() {
   pipx install sqlite3
   pip3 install python-telegram-bot "python-telegram-bot==13.5" telegram-send
   
-  echo "Downloading and setting up blocker.py..."
-  cd $LOG_DIR || exit
-  wget https://raw.githubusercontent.com/meysamsh1092/tor/main/blocker.py
 
   echo "Creating $LOG_SCRIPT_PATH ..."
   cat <<EOT > $LOG_SCRIPT_PATH
@@ -283,7 +280,6 @@ while true; do
   echo "1) Install"
   echo "2) Resize File"
   echo "3) Search Logs"
-  echo "4) Update bot_token and channel_id"
   echo "5) Delete Services and Files"
   echo "6) Restart service"
   echo "7) Exit"
@@ -292,8 +288,7 @@ while true; do
   case $CHOICE in
   1) install_script ;;
   2) change_file_size ;;
-  3) search_logs ;;
-  4) update_variables ;;
+  3) search_logs ;
   5) delete_script ;;
   6) restart_service ;;
   7) echo "Exit"; break ;;
