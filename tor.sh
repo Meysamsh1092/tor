@@ -280,18 +280,18 @@ while true; do
   echo "1) Install"
   echo "2) Resize File"
   echo "3) Search Logs"
-  echo "5) Delete Services and Files"
-  echo "6) Restart service"
-  echo "7) Exit"
+  echo "4) Delete Services and Files"
+  echo "5) Restart service"
+  echo "0) Exit"
   read -rp "Choice: " CHOICE
 
   case $CHOICE in
   1) install_script ;;
   2) change_file_size ;;
   3) search_logs ;;
-  5) delete_script ;;
-  6) restart_service ;;
-  7) echo "Exit"; break ;;
+  4) delete_script ;;
+  5) restart_service ;;
+  0) echo "Exit"; break ;;
   *) echo "Invalid choice. Please try again." ;;
   esac
 done
