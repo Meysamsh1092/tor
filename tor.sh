@@ -288,7 +288,7 @@ while true; do
   case $CHOICE in
   1) install_script ;;
   2) change_file_size ;;
-  3) search_logs ;
+  3) search_logs ;;
   5) delete_script ;;
   6) restart_service ;;
   7) echo "Exit"; break ;;
