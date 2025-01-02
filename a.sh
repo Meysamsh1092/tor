@@ -77,7 +77,7 @@ EOT
 
 LOG_FILE="$LOG_FILE"
 BACKUP_FILE="$LOG_DIR/log_backup.txt"
-ACCESS_LOG_FILE="$LOG_DIR/access.log"
+ACCESS_LOG_FILE="/usr/local/x-ui/access.log"
 
 MAX_SIZE=$MAX_SIZE
 
