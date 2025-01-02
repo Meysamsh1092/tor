@@ -257,13 +257,18 @@ delete_script() {
   systemctl disable log-rotate.timer
   rm -f $ROTATE_TIMER_PATH
   rm -f $ROTATE_SERVICE_PATH
-
+ 
   echo "Deleting specific files in $LOG_DIR..."
   rm -f $LOG_FILE
   rm -f $ROTATE_SCRIPT_PATH
   rm -f $LOG_SCRIPT_PATH
   rm -f "$LOG_DIR/blocker.py"
+  
+ systemctl stop tail-log.service
+  systemctl disable tail-log.service
+  rm /etc/systemd/system/tail-log.service
 
+  
   echo "Reloading systemd daemon..."
   systemctl daemon-reload
   
