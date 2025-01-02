@@ -46,7 +46,7 @@ install_script() {
   echo "Creating $LOG_SCRIPT_PATH ..."
   cat <<EOT > $LOG_SCRIPT_PATH
 #!/bin/bash
-/usr/bin/tail -f /usr/local/x-ui/access.log >> >> $LOG_FILE
+/usr/bin/tail -f /usr/local/x-ui/access.log >> $LOG_FILE
 EOT
   chmod +x $LOG_SCRIPT_PATH
 
